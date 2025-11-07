@@ -4,6 +4,14 @@ import type { VideoHTMLAttributes } from "react"
 
 type Rounded = "sm" | "md" | "lg" | "xl" | "full"
 
+const roundedClasses: Record<Rounded, string> = {
+  sm: "rounded-sm",
+  md: "rounded-md",
+  lg: "rounded-lg",
+  xl: "rounded-xl",
+  full: "rounded-full"
+}
+
 interface VideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
   ref: React.RefObject<HTMLVideoElement | null>
   className?: string
@@ -24,7 +32,7 @@ interface VideoUserDetailsProps {
 function Video({ ref, className, children, autoPlay = true, rounded = "xl", ...props }: VideoProps) {
   return (
     <div className="relative">
-      <video autoPlay={autoPlay} className={clsx(rounded ? `rounded-${rounded}` : "", "absolute object-cover", className)} ref={ref} {...props} />
+      <video autoPlay={autoPlay} className={clsx(rounded ? roundedClasses[rounded] : "", "absolute object-cover", className)} ref={ref} {...props} />
       <div className="p-4">
         {children}
       </div>
