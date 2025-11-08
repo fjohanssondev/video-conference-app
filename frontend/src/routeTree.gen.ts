@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MeetingCreateRouteImport } from './routes/meeting/create'
 import { Route as MeetingMeetingIdIndexRouteImport } from './routes/meeting/$meetingId/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeetingCreateRoute = MeetingCreateRouteImport.update({
+  id: '/meeting/create',
+  path: '/meeting/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MeetingMeetingIdIndexRoute = MeetingMeetingIdIndexRouteImport.update({
@@ -25,27 +31,31 @@ const MeetingMeetingIdIndexRoute = MeetingMeetingIdIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/meeting/create': typeof MeetingCreateRoute
   '/meeting/$meetingId': typeof MeetingMeetingIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/meeting/create': typeof MeetingCreateRoute
   '/meeting/$meetingId': typeof MeetingMeetingIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/meeting/create': typeof MeetingCreateRoute
   '/meeting/$meetingId/': typeof MeetingMeetingIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/meeting/$meetingId'
+  fullPaths: '/' | '/meeting/create' | '/meeting/$meetingId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/meeting/$meetingId'
-  id: '__root__' | '/' | '/meeting/$meetingId/'
+  to: '/' | '/meeting/create' | '/meeting/$meetingId'
+  id: '__root__' | '/' | '/meeting/create' | '/meeting/$meetingId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MeetingCreateRoute: typeof MeetingCreateRoute
   MeetingMeetingIdIndexRoute: typeof MeetingMeetingIdIndexRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meeting/create': {
+      id: '/meeting/create'
+      path: '/meeting/create'
+      fullPath: '/meeting/create'
+      preLoaderRoute: typeof MeetingCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/meeting/$meetingId/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MeetingCreateRoute: MeetingCreateRoute,
   MeetingMeetingIdIndexRoute: MeetingMeetingIdIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -9,6 +9,9 @@ function RouteComponent() {
   const { meetingId } = Route.useParams()
 
   return (
+    <>
     <MeetingDetails />
+    {meetingId}
+    </>
   )
 }
