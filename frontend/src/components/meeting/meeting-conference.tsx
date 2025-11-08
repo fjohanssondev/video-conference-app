@@ -4,10 +4,9 @@ import { ParticipantVideo } from "@/components/meeting/participant-video";
 
 function MeetingConference() {
   const tracks = useTracks([Track.Source.Camera]);
-  console.log("Number of tracks:", tracks.length);
-  console.log("Tracks:", tracks);
+
   return (
-    <div className="flex">
+    <div className="grid grid-cols-2 gap-4">
       {tracks.map((track) => (
         <ParticipantVideo key={track.publication.trackSid} track={track} />
       ))}

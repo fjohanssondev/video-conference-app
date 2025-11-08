@@ -3,6 +3,7 @@ import { MeetingDetails } from "@/components/meeting/meeting-details";
 import { LiveKitRoom } from "@livekit/components-react";
 import { z } from "zod";
 import { MeetingConference } from "@/components/meeting/meeting-conference";
+import { MeetingChat } from "@/components/meeting/meeting-chat";
 
 const livekitTokenSchema = z.object({
   token: z.string(),
@@ -25,7 +26,14 @@ function RouteComponent() {
     >
       <main>
         <MeetingDetails />
-        <MeetingConference />
+        <div className="flex">
+          <div className="flex-1">
+            <MeetingConference />
+          </div>
+          <div className="min-w-1/6">
+            <MeetingChat />
+          </div>
+        </div>
       </main>
     </LiveKitRoom>
   );
