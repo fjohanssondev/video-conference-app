@@ -1,23 +1,30 @@
-import { Link } from "@tanstack/react-router"
-import { Button } from "./ui/button"
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/container";
 
 function Header() {
   return (
     <header className="border-b">
-      <div className="flex container items-center mx-auto py-4">
+      <Container className="flex items-center py-3">
         <div className="flex items-center">
           <span className="font-medium">Video App</span>
           <nav className="ml-24">
             <ul className="flex space-x-2">
               <li>
-                <Link to="/" className="[&.active]:font-medium [&.active]:underline hover:underline">
+                <Link
+                  to="/"
+                  className="[&.active]:font-medium [&.active]:underline hover:underline"
+                >
                   Home
-                </Link>{' '}
+                </Link>{" "}
               </li>
               <li>
-                <Link to="/meeting/create" className="[&.active]:font-medium [&.active]:underline hover:underline">
+                <Link
+                  to="/meeting/create"
+                  className="[&.active]:font-medium [&.active]:underline hover:underline"
+                >
                   Create meeting
-                </Link>{' '}
+                </Link>{" "}
               </li>
             </ul>
           </nav>
@@ -25,9 +32,9 @@ function Header() {
         <div className="ml-auto">
           <Button>Logout</Button>
         </div>
-      </div>
+      </Container>
     </header>
-  )
+  );
 }
 
-export { Header }
+export { Header };
