@@ -1,21 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MeetingDetails } from "@/components/meeting/meeting-details";
 import { LiveKitRoom } from "@livekit/components-react";
-import { z } from "zod";
 import { MeetingConference } from "@/components/meeting/meeting-conference";
 import { MeetingChat } from "@/components/meeting/meeting-chat";
+import { useRoomToken } from "@/hooks/useRoomToken";
+import { useRef } from "react";
 
-const livekitTokenSchema = z.object({
-  token: z.string(),
-});
-
-export const Route = createFileRoute("/meeting/$meetingId/")({
+export const Route = createFileRoute("/_app/meeting/$meetingId/")({
   component: RouteComponent,
-  validateSearch: livekitTokenSchema,
 });
 
 function RouteComponent() {
-  const { token } = Route.useSearch();
+  const { meetingId } = Route.useParams();
+  const identityRef = useRef(
+    `anonymous-${Math.random().toString(36).substring(7)}`
+  );
+  const { data: token, isLoading } = useRoomToken(
+    meetingId,
+    identityRef.current
+  );
 
   return (
     <LiveKitRoom

@@ -1,7 +1,7 @@
 import { CreateMeeting } from '@/components/meeting/create-meeting'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/meeting/create')({
+export const Route = createFileRoute('/_app/meeting/create')({
   component: RouteComponent,
 })
 

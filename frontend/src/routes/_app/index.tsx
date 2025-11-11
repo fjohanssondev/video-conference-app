@@ -3,7 +3,7 @@ import { CreateMeeting } from "@/components/meeting/create-meeting";
 import { getSession } from "@/lib/auth-client";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_app/")({
   component: Dashboard,
   beforeLoad: async ({ location }) => {
     const { data } = await getSession();
