@@ -1,9 +1,22 @@
 import { Container } from "@/components/container";
 import { CreateMeeting } from "@/components/meeting/create-meeting";
-import { createFileRoute } from "@tanstack/react-router";
+import { getSession } from "@/lib/auth-client";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
+  beforeLoad: async ({ location }) => {
+    const { data } = await getSession();
+
+    if (!data?.session) {
+      throw redirect({
+        to: "/meeting/join",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
 });
 
 function Dashboard() {
