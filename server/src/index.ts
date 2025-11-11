@@ -6,11 +6,13 @@ import { auth } from '../lib/auth.js'
 
 const app = new Hono()
 
+app.use("/api/*", cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
+
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-app.use("/api/*", cors({
-  origin: "http://localhost:5173"
-}))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
