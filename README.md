@@ -1,4 +1,4 @@
-# NAME-SUGGESTION?
+# VIDEO CONFERENCE APP
 
 ## Install
 
