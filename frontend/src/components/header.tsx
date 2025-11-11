@@ -1,11 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
+import { useSession } from "@/lib/auth-client";
 
 function Header() {
+  const { data } = useSession();
+
   return (
-    <header className="border-b">
-      <Container className="flex items-center py-3">
+    <header className="border-b h-16">
+      <Container className="flex items-center h-full">
         <div className="flex items-center">
           <span className="font-medium">Video App</span>
           <nav className="ml-24">
@@ -30,7 +33,7 @@ function Header() {
           </nav>
         </div>
         <div className="ml-auto">
-          <Button>Logout</Button>
+          {!data?.user ? <Button>Login</Button> : <Button>Logout</Button>}
         </div>
       </Container>
     </header>
