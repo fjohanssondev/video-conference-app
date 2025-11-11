@@ -1,12 +1,17 @@
-import App from '@/App'
-import { createFileRoute } from '@tanstack/react-router'
+import { Container } from "@/components/container";
+import { CreateMeeting } from "@/components/meeting/create-meeting";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/')({
-  component: Index,
-})
+export const Route = createFileRoute("/")({
+  component: Dashboard,
+});
 
-function Index() {
+function Dashboard() {
   return (
-    <App />
-  )
+    <main className="mt-8">
+      <Container>
+        <CreateMeeting />
+      </Container>
+    </main>
+  );
 }
