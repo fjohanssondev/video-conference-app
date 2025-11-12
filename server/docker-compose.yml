@@ -1,5 +1,8 @@
+name: video-conference-app
+
 services:
   postgres:
+    container_name: video-calls-db
     image: postgres
     environment:
       POSTGRES_USER: admin
@@ -7,3 +10,26 @@ services:
       POSTGRES_DB: video-calls
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  livekit:
+    container_name: livekit
+    image: livekit/livekit-server:latest
+    command: --dev
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "7882:7882/udp"
+    environment:
+      LIVEKIT_KEYS: "${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}"
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
