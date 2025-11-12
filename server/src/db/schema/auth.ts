@@ -1,9 +1,9 @@
-import { text, timestamp, boolean, pgSchema } from "drizzle-orm/pg-core";
-
-export const authSchema = pgSchema('auth');
+import { text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { authSchema } from "../schemas.js";
+import { createId } from "@paralleldrive/cuid2";
 
 export const user = authSchema.table("user", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => createId()),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
@@ -16,7 +16,7 @@ export const user = authSchema.table("user", {
 });
 
 export const session = authSchema.table("session", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => createId()),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -31,7 +31,7 @@ export const session = authSchema.table("session", {
 });
 
 export const account = authSchema.table("account", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => createId()),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
   userId: text("user_id")
@@ -51,7 +51,7 @@ export const account = authSchema.table("account", {
 });
 
 export const verification = authSchema.table("verification", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => createId()),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
