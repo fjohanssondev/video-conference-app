@@ -21,8 +21,9 @@ app.get('/', (c) => {
 app.post("/api/token", async (c) => {
   const { roomName, identity } = await c.req.json()
 
-  const at = new AccessToken("devkey", "secret", {
-    identity
+  const at = new AccessToken(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET, {
+    identity,
+    ttl: "10m"
   })
 
   at.addGrant({ roomJoin: true, room: roomName })
