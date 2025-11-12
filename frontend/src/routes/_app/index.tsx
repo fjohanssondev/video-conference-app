@@ -1,5 +1,6 @@
 import { Container } from "@/components/container";
 import { CreateMeeting } from "@/components/meeting/create-meeting";
+import { JoinMeeting } from "@/components/meeting/join-meeting";
 import { getSession } from "@/lib/auth-client";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
@@ -25,7 +26,10 @@ function Dashboard() {
       <Container>
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-medium">Dashboard</h1>
-          <CreateMeeting />
+          <div className="flex items-center space-x-2">
+            <CreateMeeting />
+            <JoinMeeting />
+          </div>
         </div>
       </Container>
     </main>

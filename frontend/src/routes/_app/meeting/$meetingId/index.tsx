@@ -5,6 +5,8 @@ import { MeetingConference } from "@/components/meeting/meeting-conference";
 import { MeetingChat } from "@/components/meeting/meeting-chat";
 import { useRoomToken } from "@/hooks/useRoomToken";
 import { useRef } from "react";
+import { useSession } from "@/lib/auth-client";
+import { Container } from "@/components/container";
 
 export const Route = createFileRoute("/_app/meeting/$meetingId/")({
   component: RouteComponent,
@@ -15,10 +17,16 @@ function RouteComponent() {
   const identityRef = useRef(
     `anonymous-${Math.random().toString(36).substring(7)}`
   );
-  const { data: token, isLoading } = useRoomToken(
+  const { data, isPending } = useSession();
+
+  const { data: token } = useRoomToken(
     meetingId,
-    identityRef.current
+    data?.user.id || identityRef.current
   );
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <LiveKitRoom
@@ -29,14 +37,16 @@ function RouteComponent() {
     >
       <main>
         <MeetingDetails />
-        <div className="flex">
-          <div className="flex-1">
-            <MeetingConference />
+        <Container>
+          <div className="flex">
+            <div className="flex-1">
+              <MeetingConference />
+            </div>
+            <div className="min-w-1/6">
+              <MeetingChat />
+            </div>
           </div>
-          <div className="min-w-1/6">
-            <MeetingChat />
-          </div>
-        </div>
+        </Container>
       </main>
     </LiveKitRoom>
   );
