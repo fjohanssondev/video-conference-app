@@ -23,17 +23,37 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 
-const formSchema = z.object({
-  name: z.string().min(5),
-  description: z.string().min(5),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(5),
+    public: z.boolean(),
+    scheduledStartAt: z.date(),
+    scheduledEndAt: z.date(),
+    description: z.string().min(5),
+  })
+  .refine((data) => data.scheduledEndAt > data.scheduledStartAt, {
+    error: "End date must be after the start date",
+    path: ["scheduledEndAt"],
+  });
 
 function CreateMeeting() {
   const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
       name: "",
+      scheduledStartAt: new Date(),
+      scheduledEndAt: new Date(),
+      public: false,
       description: "",
     },
     validators: {
@@ -41,10 +61,11 @@ function CreateMeeting() {
     },
     ...formOptions,
     onSubmit: async ({ value }) => {
-      navigate({
+      console.log(value);
+      /* navigate({
         to: "/meeting/$meetingId",
         params: { meetingId: value.name },
-      });
+      }); */
     },
   });
 
@@ -97,6 +118,97 @@ function CreateMeeting() {
                         {isInvalid && (
                           <FieldError errors={field.state.meta.errors} />
                         )}
+                      </Field>
+                    );
+                  }}
+                />
+                <div className="flex gap-4">
+                  <form.Field
+                    name="scheduledStartAt"
+                    children={(field) => {
+                      const isInvalid =
+                        field.state.meta.isTouched && !field.state.meta.isValid;
+                      return (
+                        <Field>
+                          <FieldLabel className="sr-only" htmlFor={field.name}>
+                            When is the meeting scheduled to start?
+                          </FieldLabel>
+                          <DatePicker
+                            name={field.name}
+                            dateLabel="Start Date"
+                            value={field.state.value}
+                            onChange={(date) => {
+                              if (date) {
+                                field.handleChange(date);
+                                form.validateField("scheduledEndAt", "change");
+                              }
+                            }}
+                            defaultTime={{ hours: 10, minutes: 30, seconds: 0 }}
+                          />
+                          {isInvalid && (
+                            <FieldError errors={field.state.meta.errors} />
+                          )}
+                        </Field>
+                      );
+                    }}
+                  />
+                  <form.Field
+                    name="scheduledEndAt"
+                    children={(field) => {
+                      const isInvalid =
+                        field.state.meta.isTouched && !field.state.meta.isValid;
+                      return (
+                        <Field>
+                          <FieldLabel className="sr-only" htmlFor={field.name}>
+                            When is the meeting scheduled to end?
+                          </FieldLabel>
+                          <DatePicker
+                            name={field.name}
+                            dateLabel="End Date"
+                            value={field.state.value}
+                            onChange={(date) => {
+                              if (date) {
+                                field.handleChange(date);
+                                form.validateField(
+                                  "scheduledStartAt",
+                                  "change"
+                                );
+                              }
+                            }}
+                            defaultTime={{ hours: 10, minutes: 30, seconds: 0 }}
+                          />
+                          {isInvalid && (
+                            <FieldError errors={field.state.meta.errors} />
+                          )}
+                        </Field>
+                      );
+                    }}
+                  />
+                </div>
+                <form.Field
+                  name="public"
+                  children={(field) => {
+                    return (
+                      <Field>
+                        <FieldLabel htmlFor={field.name}>
+                          Will the meeting be private or public?
+                        </FieldLabel>
+                        <Select
+                          value={String(field.state.value)}
+                          onValueChange={(value) =>
+                            field.handleChange(value === "true")
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select public or private" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="false">Private</SelectItem>
+                              <SelectItem value="true">Public</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </Field>
                     );
                   }}
